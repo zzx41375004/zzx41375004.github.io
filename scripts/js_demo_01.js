@@ -18,22 +18,25 @@ function checkGuess() {
     guesses.textContent += `${userGuess} `;
 
     if (userGuess === randomNumber) {
-        lastResult.textContent = 'Congratulations! You got it right!';
+        lastResult.textContent = '恭喜～你猜对了！';
         lastResult.style.backgroundColor = 'green';
         lowOrHi.textContent = '';
         setGameOver();
     } else if (guessCount === 10) {
-        lastResult.textContent = '!!!GAME OVER!!!';
+        lastResult.textContent = '!!!次数用尽，GAME OVER!!!';
+        lastResult.color = 'red';
         lowOrHi.textContent = '';
         setGameOver();
     } else {
-        lastResult.textContent = 'Wrong!';
-        lastResult.style.backgroundColor = 'red';
+        lastResult.textContent = '错了!';
+        // lastResult.style.backgroundColor = 'red';
+        lastResult.style.color = 'red';
         if (userGuess < randomNumber) {
-            lowOrHi.textContent = 'Last guess was too low!';
+            lowOrHi.textContent = '你猜的数字太小了!';
         } else if (userGuess > randomNumber) {
-            lowOrHi.textContent = 'Last guess was too high!';
+            lowOrHi.textContent = '你猜的数字太大了';
         }
+        lowOrHi.style.color = 'lightgreen';
     }
 
     guessCount++;
@@ -47,7 +50,7 @@ function setGameOver() {
     guessField.disabled = true;
     guessSubmit.disabled = true;
     resetButton = document.createElement('button');
-    resetButton.textContent = 'Start new game';
+    resetButton.textContent = '再玩一次';
     document.body.append(resetButton);
     resetButton.addEventListener('click', resetGame);
 }
@@ -77,6 +80,10 @@ guessField.addEventListener("keydown", logKey);
 function logKey(e) {
     if (e.code === "Enter") {
         checkGuess();
+    } else {
+        lastResult.textContent = '';
+        lowOrHi.textContent = '';
+        lastResult.style.backgroundColor = 'white';
     }
 }
 
