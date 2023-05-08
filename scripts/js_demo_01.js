@@ -19,7 +19,7 @@ function checkGuess() {
 
     if (userGuess === randomNumber) {
         lastResult.textContent = '恭喜～你猜对了！';
-        lastResult.style.backgroundColor = 'green';
+        lastResult.color = 'lightgreen'
         lowOrHi.textContent = '';
         setGameOver();
     } else if (guessCount === 10) {
