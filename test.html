@@ -3,85 +3,55 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Function start</title>
+    <title>Random color example — event handler attribute</title>
     <style>
-        .msgBox {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
-            width: 242px;
-            background: #eee;
+        .hidden {
+            visibility: hidden;
         }
-
-        .msgBox p {
-            line-height: 1.5;
-            padding: 10px 20px;
-            color: #333;
-            padding-left: 82px;
-            background-position: 25px center;
-            background-repeat: no-repeat;
+        button {
+            margin: 10px
         }
-
-        .msgBox button {
-            background: none;
-            border: none;
-            position: absolute;
-            top: 0;
-            right: 0;
-            font-size: 1.1rem;
-            color: #aaa;
-        }
-
     </style>
 </head>
 <body>
-<button>Display message box</button>
-<button id="close">Close message box</button>
+
+<button>Display video</button>
+
+<div class="hidden">
+    <video>
+        <source
+                src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
+                type="video/webm" />
+        <p>
+            Your browser doesn't support HTML video. Here is a
+            <a href="rabbit320.mp4">link to the video</a> instead.
+        </p>
+    </video>
+</div>
 
 <script>
-function displayMessage(msgText = 'This is a message box', msgType) {
-    const body = document.body;
 
-    const panel = document.createElement('div');
-    panel.setAttribute('class','msgBox');
-    body.appendChild(panel);
+    const btn = document.querySelector("button");
 
-    const msg = document.createElement('p');
-    msg.textContent = msgText;
-    panel.appendChild(msg);
-
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = 'x';
-    panel.appendChild(closeBtn);
-
-    closeBtn.addEventListener('click', () => panel.parentNode.removeChild(panel));
-
-    if (msgType === 'warning') {
-        msg.style.backgroundImage = 'url(icons/warning.png)';
-        panel.style.backgroundColor = 'red';
-    } else if (msgType === 'chat') {
-        msg.style.backgroundImage = 'url(icons/chat.png)';
-        panel.style.backgroundColor = 'aqua';
-    } else {
-        msg.style.paddingLeft = '20px';
-    }
-}
-
-const btn = document.querySelector('button');
-btn.addEventListener('click', () => {
-    displayMessage("hello world!");
-    // displayMessage("hello world!", 'chat');
-});
-
-const close_btn = document.getElementById('close');
-close_btn.addEventListener('click', () => {
-    const panels = document.querySelectorAll('div');
-    for (const panel of panels) {
-        panel.parentNode.removeChild(panel);
-    }
-});
-
+    btn.addEventListener('click', (e) => {
+        if (btn.textContent === '') {
+            btn.textContent = 'hello world';
+        } else {
+            btn.textContent = '';
+        }
+    });
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

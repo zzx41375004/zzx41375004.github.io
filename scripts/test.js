@@ -1,6 +1,21 @@
-arr = [1, 3, 2];
-arr.sort(function (o1, o2){
-    return o2 - o1;
-});
+function updateBrand(obj) {
+    // Mutating the object is visible outside the function
+    obj.brand = "Toyota";
+    // Try to reassign the parameter, but this won't affect
+    // the variable's value outside the function
+    obj = null;
+}
 
-console.log(arr);
+const car = {
+    brand: "Honda",
+    model: "Accord",
+    year: 1998,
+};
+
+console.log(car.brand); // Honda
+
+// Pass object reference to the function
+updateBrand(car);
+
+// updateBrand mutates car
+console.log(car.brand); // Toyota
