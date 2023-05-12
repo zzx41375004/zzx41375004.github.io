@@ -1,21 +1,17 @@
-function updateBrand(obj) {
-    // Mutating the object is visible outside the function
-    obj.brand = "Toyota";
-    // Try to reassign the parameter, but this won't affect
-    // the variable's value outside the function
-    obj = null;
+async function populate() {
+  const requestURL =
+    "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json";
+  const request = new Request(requestURL);
+
+  const response = await fetch(request);
+  const superHeroes = await response.json();
+  return superHeroes;
+
+//   populateHeader(superHeroes);
+//   populateHeroes(superHeroes);
 }
 
-const car = {
-    brand: "Honda",
-    model: "Accord",
-    year: 1998,
-};
+superHeroes = populate();
 
-console.log(car.brand); // Honda
+console.log(superHeroes);
 
-// Pass object reference to the function
-updateBrand(car);
-
-// updateBrand mutates car
-console.log(car.brand); // Toyota
