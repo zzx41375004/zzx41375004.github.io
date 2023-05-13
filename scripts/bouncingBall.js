@@ -22,20 +22,29 @@ function randomRGB() {
     return `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`;
 }
 
-class Ball {
-    constructor(x, y, velX, velY, color, size) {
+class Shape {
+    constructor(x, y, velX, velY) {
         this.x = x;
         this.y = y;
-        while (Math.abs(velX - 0) < 1e-6) {
-            velX = random(-5, 5);
-        }
-        while (Math.abs(velY - 0) < 1e-6) {
-            velY = random(-5, 5);
-        }
         this.velX = velX;
         this.velY = velY;
+    }
+}
+
+class Ball extends Shape {
+    constructor(x, y, velX, velY, color, size) {
+        super(x, y, velX, velY);
         this.color = color;
         this.size = size;
+        this.alive = true;
+    }
+
+    dead() {
+        this.alive = false;
+    }
+
+    isAlive() {
+        return this.alive;
     }
 
     draw() {
@@ -65,14 +74,12 @@ class Ball {
         this.x += this.velX;
         this.y += this.velY;
     }
-
-
 }
 
 class BallMgr {
     balls = [];
-    ball_min_vel = -5
-    ball_max_vel = 5
+    ball_min_vel = -6
+    ball_max_vel = 6
 
     ballCreate(ballNum) {
         while (this.balls.length < ballNum) {
@@ -93,15 +100,19 @@ class BallMgr {
         this.loop(this.balls);
     }
 
-    collisionDetect(this_ball) {
+    collisionDetect(target_ball) {
+        evilCycle.collisionDetect(target_ball);
+        if (target_ball.isAlive === false) {
+            return;
+        }
         for (const ball of this.balls) {
-            if (this_ball !== ball) {
-                const dx = this_ball.x - ball.x;
-                const dy = this_ball.y - ball.y;
+            if (target_ball !== ball && ball.isAlive()) {
+                const dx = target_ball.x - ball.x;
+                const dy = target_ball.y - ball.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < this_ball.size + ball.size) {
-                    ball.color = this_ball.color = randomRGB();
+                if (distance < target_ball.size + ball.size) {
+                    ball.color = target_ball.color = randomRGB();
                 }
             }
         }
@@ -112,11 +123,17 @@ class BallMgr {
         ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
         ctx.fillRect(0, 0, width, height);
 
+        evilCycle.draw();
+
         for (const ball of balls) {
+            if (ball.isAlive() === false) {
+                continue;
+            }
             ball.draw();
             ball.update();
             this.collisionDetect(ball);
         }
+
 
         requestAnimationFrame(() => {
             this.loop(balls);
@@ -124,8 +141,6 @@ class BallMgr {
     }
 }
 
-let ballMgr = new BallMgr();
-ballMgr.ballCreate(30);
 
 
 class Heart {
@@ -225,6 +240,73 @@ class HeartMgr {
         });
     }
 }
+
+
+class EvilCycle extends Shape {
+    constructor(x, y) {
+        super(x, y, 20, 20);
+        this.color = 'white';
+        this.size = 10;
+        window.addEventListener("keydown", (e) => {
+            // console.log(e.key);
+            switch (e.key) {
+                case "ArrowLeft":
+                    this.x -= this.velX;
+                    break;
+                case "ArrowRight":
+                    this.x += this.velX;
+                    break;
+                case "ArrowUp":
+                    this.y -= this.velY;
+                    break;
+                case "ArrowDown":
+                    this.y += this.velY;
+                    break;
+            }
+        });
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = this.color;
+        ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
+
+    checkBound() {
+        if ((this.x + this.size) >= width) {
+            this.x = -(this.velX);
+        }
+
+        if ((this.x - this.size) <= 0) {
+            this.x = -(this.velX);
+        }
+
+        if ((this.y + this.size) >= height) {
+            this.y = -(this.velY);
+        }
+
+        if ((this.y - this.size) <= 0) {
+            this.y = -(this.velY);
+        }
+    }
+
+    collisionDetect(ball) {
+        const dx = this.x - ball.x;
+        const dy = this.y - ball.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < this.size + ball.size) {
+            ball.dead();
+        }
+    }
+}
+
+let ballMgr = new BallMgr();
+size = 10;
+let evilCycle = new EvilCycle(random(0 + size, width - size), random(0 + size, width - size));
+ballMgr.ballCreate(30);
 
 // heartMgr = new HeartMgr;
 // heartMgr.heartCreate(30);
