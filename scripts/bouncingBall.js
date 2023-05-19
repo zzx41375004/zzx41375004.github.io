@@ -263,6 +263,7 @@ class EvilCycle extends Shape {
                     this.y += this.velY;
                     break;
             }
+            this.checkBound();
         });
     }
 
@@ -276,19 +277,19 @@ class EvilCycle extends Shape {
 
     checkBound() {
         if ((this.x + this.size) >= width) {
-            this.x = -(this.velX);
+            this.x -= (this.velX);
         }
 
         if ((this.x - this.size) <= 0) {
-            this.x = -(this.velX);
+            this.x += (this.velX);
         }
 
         if ((this.y + this.size) >= height) {
-            this.y = -(this.velY);
+            this.y -= (this.velY);
         }
 
         if ((this.y - this.size) <= 0) {
-            this.y = -(this.velY);
+            this.y += (this.velY);
         }
     }
 
@@ -305,7 +306,7 @@ class EvilCycle extends Shape {
 
 let ballMgr = new BallMgr();
 size = 10;
-let evilCycle = new EvilCycle(random(0 + size, width - size), random(0 + size, width - size));
+let evilCycle = new EvilCycle(width / 2, height / 2);
 ballMgr.ballCreate(30);
 
 // heartMgr = new HeartMgr;

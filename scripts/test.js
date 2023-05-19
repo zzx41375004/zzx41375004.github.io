@@ -1,17 +1,32 @@
-async function populate() {
-  const requestURL =
-    "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json";
-  const request = new Request(requestURL);
+const fetchPromise1 = fetch(
+  "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json"
+);
+const fetchPromise2 = fetch(
+  "https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-found"
+);
+const fetchPromise3 = fetch(
+  "https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json"
+);
 
-  const response = await fetch(request);
-  const superHeroes = await response.json();
-  return superHeroes;
+t = Promise.all([fetchPromise1, fetchPromise2, fetchPromise3]);
 
-//   populateHeader(superHeroes);
-//   populateHeroes(superHeroes);
-}
+t.catch((error) => {
+  console.error(`Failed to fetch: ${error}`);
+});
 
-superHeroes = populate();
+t.then((responses) => {
+  for (const response of responses) {
+    console.log(`${response.url}: ${response.status}`);
+  }
+})
 
-console.log(superHeroes);
 
+// Promise.all([fetchPromise1, fetchPromise2, fetchPromise3])
+//   .then((responses) => {
+//     for (const response of responses) {
+//       console.log(`${response.url}: ${response.status}`);
+//     }
+//   })
+//   .catch((error) => {
+//     console.error(`Failed to fetch: ${error}`);
+//   });
