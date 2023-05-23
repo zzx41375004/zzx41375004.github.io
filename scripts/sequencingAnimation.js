@@ -46,3 +46,5 @@ function useAsync() {
 
     useAsync().then(() => console.log("useAsync!"));
 }
+
+usePromiseChain();

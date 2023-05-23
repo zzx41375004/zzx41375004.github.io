@@ -2,71 +2,16 @@
 <html lang="en-us">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping list example</title>
-    <style>
-        li {
-            margin-bottom: 10px;
-        }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        li button {
-            font-size: 8px;
-            margin-left: 20px;
-            color: #666;
-        }
-    </style>
+    <title>Three.js basic cube example</title>
+
+    <script src="three.min.js" defer></script>
+    <script src="script.js" defer></script>
+    <link href="style.css" rel="stylesheet" />
 </head>
 
-<body>
-
-    <h1>My shopping list</h1>
-
-    <div>
-        <label for="item">Enter a new item:</label>
-        <input type="text" name="item" id="item">
-        <button id="add">Add item</button>
-        <button id="delete_all">Delete all item</button>
-    </div>
-
-    <ul>
-    </ul>
-
-    <script>
-        const myul = document.querySelector("ul");
-        // @type input
-        const myinput = document.querySelector("input");
-        const btn = document.querySelector("#add");
-        document.querySelector("#delete_all").addEventListener("click", () => {
-            let child;
-            while (child = myul.children.item(0)) {
-                child.remove();
-            }
-        })
-        myinput.addEventListener("keydown", (e) => {
-            console.log(e.key);
-            if (e.key == 'Enter') {
-                btn.click();
-            }
-        })
-
-        btn.addEventListener("click", () => {
-            const itemText = myinput.value;
-            const newLi = document.createElement("li");
-            const newSpan = document.createElement("span");
-            const newBtn = document.createElement("button");
-            newLi.appendChild(newSpan);
-            newLi.appendChild(newBtn);
-            newSpan.textContent = itemText;
-            newBtn.textContent = 'Delete';
-            newBtn.addEventListener('click', () => {
-                newLi.remove();
-            });
-            myul.appendChild(newLi);
-            myinput.value = "";
-            myinput.focus();
-        })
-    </script>
-</body>
+<body></body>
 
 </html>
